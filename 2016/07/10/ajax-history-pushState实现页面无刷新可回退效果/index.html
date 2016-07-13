@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>ajax+history.pushState实现页面无刷新可回退效果 | 非空的小站 | 记录工作、学习、生活中的点点滴滴</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="theme-color" content="#3F51B5">
+  
+  
+  <meta name="keywords" content="Web开发,JavaScript">
+  <meta name="description" content="Ajax可以实现页面的无刷新操作，但是，也会造成另外的问题，无法前进与后退。HTML5 history的新特性pushState、replaceState会帮我们实现页面的前进与后退。
+HTML5引入了histtory.pushState()和history.replaceState()这两个方法，他们允许添加和修改history实体。同时，这些方法会和window.onpostate事件一起工作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ajax+history.pushState实现页面无刷新可回退效果">
+<meta property="og:url" content="http://qrframe.com/2016/07/10/ajax-history-pushState实现页面无刷新可回退效果/index.html">
+<meta property="og:site_name" content="非空的小站">
+<meta property="og:description" content="Ajax可以实现页面的无刷新操作，但是，也会造成另外的问题，无法前进与后退。HTML5 history的新特性pushState、replaceState会帮我们实现页面的前进与后退。
+HTML5引入了histtory.pushState()和history.replaceState()这两个方法，他们允许添加和修改history实体。同时，这些方法会和window.onpostate事件一起工作">
+<meta property="og:updated_time" content="2016-07-13T06:51:20.617Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ajax+history.pushState实现页面无刷新可回退效果">
+<meta name="twitter:description" content="Ajax可以实现页面的无刷新操作，但是，也会造成另外的问题，无法前进与后退。HTML5 history的新特性pushState、replaceState会帮我们实现页面的前进与后退。
+HTML5引入了histtory.pushState()和history.replaceState()这两个方法，他们允许添加和修改history实体。同时，这些方法会和window.onpostate事件一起工作">
+  
+    <link rel="alternative" href="/atom.xml" title="非空的小站" type="application/atom+xml">
+  
+  <meta name="summary" content="&lt;p&gt;Ajax可以实现页面的无刷新操作，但是，也会造成另外的问题，无法前进与后退。HTML5 history的新特性pushState、replaceState会帮我们实现页面的前进与后退。&lt;/p&gt;
+&lt;p&gt;HTML5引入了histtory.pushState()和history.replaceState()这两个方法，他们允许添加和修改history实体。同时，这些方法会和window.onpostate事件一起工作。&lt;br&gt;">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="loading" class="active"></div>
+
+  <nav id="menu" class="hide" >
+   <div class="inner flex-row-vertical">
+  <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+      <i class="icon icon-lg icon-close"></i>
+  </a>
+  <div class="brand-wrap">
+    <div class="brand">
+      <a href="/" class="avatar"><img src="/img/logo.jpg"></a>
+      <hgroup class="introduce">
+        <h5 class="nickname">Ren Qi</h5>
+        <a href="mailto:undefined" title="634206017@qq.com" class="mail">634206017@qq.com</a>
+      </hgroup>
+    </div>
+  </div>
+  <ul class="nav flex-col">
+    
+        <li class="waves-block waves-effect">
+          <a href="/"  >
+            <i class="icon icon-lg icon-home"></i>
+            主页
+          </a>
+        </li>
+    
+        <li class="waves-block waves-effect">
+          <a href="/archives"  >
+            <i class="icon icon-lg icon-archives"></i>
+            文档
+          </a>
+        </li>
+    
+        <li class="waves-block waves-effect">
+          <a href="/tags"  >
+            <i class="icon icon-lg icon-tags"></i>
+            标签
+          </a>
+        </li>
+    
+        <li class="waves-block waves-effect">
+          <a href="https://github.com/ren8179" target="_blank" >
+            <i class="icon icon-lg icon-github"></i>
+            Github
+          </a>
+        </li>
+    
+        <li class="waves-block waves-effect">
+          <a href="/404"  >
+            <i class="icon icon-lg icon-link"></i>
+            测试
+          </a>
+        </li>
+    
+  </ul>
+
+  <footer class="footer">
+  <p><a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0;vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAPCAMAAABEF7i9AAAAllBMVEUAAAD///+rsapERER3d3eIiIjMzMzu7u4iIiKUmZO6v7rKzsoODg4RERFVVVUNDQ0NDg0PEA8zMzNLTEtbXltmZmZydnF9gn2AgICPkI+ZmZmqqqq7u7vFxsXIzMgNDQwZGRkgICAhISEkJSMnKCcuMC4xMzE5Ozk7PTtBQkFCQkJDQ0Nna2eGhoaHh4ezuLLGysbd3d1wVGpAAAAA4UlEQVR42q2T1xqCMAyFk7QsBQeKA9x7j/d/OSm22CpX0nzcpA1/T05aAOuBVkMAScQFHLnEwoCo2f1TnQIGoVMewjZEjVFN4GH1Ue1Cn2jWqwfsOOj6wDwGvotsl/c8lv7KIq1eLOsT0HMFHMIE/RZyHnlphryT9zyV+8WH5e8yQw3wnQvgAFxPTKUVi555SHR/lOfLMgVTeDlSfN+TaoUsiTyeIm+bCkHvCA2FUKG48LDtYBZBknsYP/G8NTw0gaaHyuQf4H5pecrB/FYCT2sL9zAfy1Xyjou6L8X2W7YcLyBZCRtnq/zfAAAAAElFTkSuQmCC" /></a></p>
+  <p>非空的小站 &copy; 2016</p>
+  <p>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme
+  <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></p>
+  <a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-2x icon-rss-square"></i></a>
+</footer>
+
+</div>
+
+  </nav>
+  <main id="main">
+    <header class="header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">ajax+history.pushState实现页面无刷新可回退效果</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-share">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header">
+  <div class="container">
+    <h1 class="author">ajax+history.pushState实现页面无刷新可回退效果</h1>
+    <h5 class="subtitle">
+          
+            <time datetime="2016-07-10T03:15:29.000Z" itemprop="datePublished" class="page-time">
+  2016-07-10
+</time>
+
+ 
+        
+    </h5>
+  </div>
+</header>
+
+    <div class="container body-wrap">
+      <article id="post-ajax-history-pushState实现页面无刷新可回退效果" 
+  class="article article-type-post" itemprop="blogPost">
+    <div class="post-meat flex-row">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web开发/">Web开发</a></li></ul>
+
+    </div>
+    <div class="post-body">
+        <aside class="post-widget" id="post-widget">
+
+            
+            <div class="post-share" id="post-share">
+    <div class="tit">分享到：</div>
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" href="javascript:;" data-title="微博" data-service="tsina">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns" href="javascript:;" data-title="微信" data-service="weixin">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" href="javascript:;" data-title=" QQ" data-service="cqq">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" href="javascript:;" data-title=" Facebook" data-service="fb">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" href="javascript:;" data-title=" Twitter" data-service="twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="douban share-sns" href="javascript:;" data-title="豆瓣" data-service="douban">
+          豆
+        </a>
+      </li>
+    </ul>
+ </div>
+
+            
+
+            
+            <nav class="post-toc-wrap" id="post-toc">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#history-state"><span class="post-toc-text">history.state</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#history-pushState-state-title-url"><span class="post-toc-text">history.pushState(state, title, url)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#history-replaceState-state-title-url"><span class="post-toc-text">history.replaceState(state, title, url)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#window-onpopstate"><span class="post-toc-text">window.onpopstate</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#支持性判断"><span class="post-toc-text">支持性判断</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#示例代码"><span class="post-toc-text">示例代码</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Demo-地址"><span class="post-toc-text">Demo 地址</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#引用的文章地址"><span class="post-toc-text">引用的文章地址</span></a></li></ol></li></ol>
+            </nav>
+            
+        </aside>
+
+        <div class="post-main">
+
+            <div class="post-content" id="post-content" itemprop="postContent">
+            <p>Ajax可以实现页面的无刷新操作，但是，也会造成另外的问题，无法前进与后退。HTML5 history的新特性pushState、replaceState会帮我们实现页面的前进与后退。</p>
+<p>HTML5引入了histtory.pushState()和history.replaceState()这两个方法，他们允许添加和修改history实体。同时，这些方法会和window.onpostate事件一起工作。<br><a id="more"></a><br>pushState用于向history添加当前页面的记录，而replaceState和pushState的用法完全一样，唯一的区别就是它用于修改当前页面在history中的记录。</p>
+<h2 id="history-state"><a href="#history-state" class="headerlink" title="history.state"></a>history.state</h2><p>当前URL下对应的状态信息。如果当前URL不是通过pushState或者replaceState产生的，那么history.state是null。</p>
+<h2 id="history-pushState-state-title-url"><a href="#history-pushState-state-title-url" class="headerlink" title="history.pushState(state, title, url)"></a>history.pushState(state, title, url)</h2><p>将当前URL和history.state加入到history中，并用新的state和URL替换当前。不会造成页面刷新。</p>
+<ul>
+<li><p>state：与要跳转到的URL对应的状态信息</p>
+</li>
+<li><p>title：不知道干啥用，传空字符串就行了</p>
+</li>
+<li><p>url：要跳转到的URL地址，不能跨域</p>
+</li>
+</ul>
+<h2 id="history-replaceState-state-title-url"><a href="#history-replaceState-state-title-url" class="headerlink" title="history.replaceState(state, title, url)"></a>history.replaceState(state, title, url)</h2><p>用新的state和URL替换当前。不会造成页面刷新。</p>
+<ul>
+<li><p>state：与要跳转到的URL对应的状态信息</p>
+</li>
+<li><p>title：不知道干啥用，传空字符串就行了</p>
+</li>
+<li><p>url：要跳转到的URL地址，不能跨域</p>
+</li>
+</ul>
+<h2 id="window-onpopstate"><a href="#window-onpopstate" class="headerlink" title="window.onpopstate"></a>window.onpopstate</h2><p>history.go和history.back（包括用户按浏览器历史前进后退按钮）触发，并且页面无刷的时候（由于使用pushState修改了history）会触发popstate事件，事件发生时浏览器会从history中取出URL和对应的state对象替换当前的URL和history.state。通过event.state也可以获取history.state。</p>
+<h2 id="支持性判断"><a href="#支持性判断" class="headerlink" title="支持性判断"></a>支持性判断</h2><p>if (‘pushState’ in history) {…}</p>
+<h2 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"row"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col s12"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">"tabs"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"tab col s3"</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"active"</span> <span class="attr">href</span>=<span class="string">"test?id=test1"</span>&gt;</span>Test 1<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"tab col s3"</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"test?id=test2"</span>&gt;</span>Test 2<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"tab col s3"</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"test?id=test3"</span>&gt;</span>Test 3<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"tab col s3"</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"test?id=test4"</span>&gt;</span>Test 4<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"test"</span> <span class="attr">class</span>=<span class="string">"col s12 "</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</div><div class="line"><span class="keyword">var</span> $index = <span class="number">0</span>;</div><div class="line"><span class="keyword">var</span> eleMenus = $(<span class="string">".tabs a"</span>).bind(<span class="string">"click"</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> query = <span class="keyword">this</span>.href.split(<span class="string">"?"</span>)[<span class="number">1</span>];</div><div class="line">    <span class="keyword">if</span> (history.pushState &amp;&amp; query) &#123;</div><div class="line">        <span class="comment">/*</span></div><div class="line">            ajax载入~~</div><div class="line">        */</div><div class="line">        <span class="keyword">var</span> title = $(<span class="keyword">this</span>).text();</div><div class="line">        $(<span class="string">"#test"</span>).text(title);</div><div class="line">        <span class="comment">// 添加动画效果</span></div><div class="line">        $(<span class="string">".tabs a"</span>).removeClass(<span class="string">"active"</span>);</div><div class="line">        $(<span class="keyword">this</span>).addClass(<span class="string">"active"</span>);</div><div class="line">        <span class="keyword">var</span> $tabs_width = $(<span class="string">".tabs"</span>).width(), </div><div class="line">        $tab_width = $(<span class="string">".tabs"</span>).find(<span class="string">'li'</span>).first().outerWidth(), </div><div class="line">        $prev_index = $index;</div><div class="line">        $index = $(<span class="string">".tabs a"</span>).index($(<span class="keyword">this</span>));</div><div class="line">        <span class="keyword">if</span> ($index &lt; <span class="number">0</span>) &#123;</div><div class="line">            $index = <span class="number">0</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (($index - $prev_index) &gt;= <span class="number">0</span>) &#123;</div><div class="line">            $(<span class="string">".indicator"</span>).velocity(&#123; <span class="string">"right"</span>: $tabs_width - (($index + <span class="number">1</span>) * $tab_width) &#125;, &#123; duration: <span class="number">300</span>, queue: <span class="literal">false</span>, easing: <span class="string">'easeOutQuad'</span> &#125;);</div><div class="line">            $(<span class="string">".indicator"</span>).velocity(&#123; <span class="string">"left"</span>: $index * $tab_width &#125;, &#123; duration: <span class="number">300</span>, queue: <span class="literal">false</span>, easing: <span class="string">'easeOutQuad'</span>, delay: <span class="number">90</span> &#125;);</div><div class="line">        &#125;<span class="keyword">else</span> &#123;</div><div class="line">            $(<span class="string">".indicator"</span>).velocity(&#123; <span class="string">"left"</span>: $index * $tab_width &#125;, &#123; duration: <span class="number">300</span>, queue: <span class="literal">false</span>, easing: <span class="string">'easeOutQuad'</span> &#125;);</div><div class="line">            $(<span class="string">".indicator"</span>).velocity(&#123; <span class="string">"right"</span>: $tabs_width - (($index + <span class="number">1</span>) * $tab_width) &#125;, &#123; duration: <span class="number">300</span>, queue: <span class="literal">false</span>, easing: <span class="string">'easeOutQuad'</span>, delay: <span class="number">90</span> &#125;);</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// history处理</span></div><div class="line">        <span class="built_in">document</span>.title = title;</div><div class="line">        <span class="keyword">if</span> (event &amp;&amp; <span class="regexp">/\d/</span>.test(event.button)) &#123;</div><div class="line">            history.pushState(&#123; title: title &#125;, title, location.href.split(<span class="string">"?"</span>)[<span class="number">0</span>] + <span class="string">"?"</span> + query);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">&#125;);</div><div class="line"><span class="keyword">var</span> fnHashTrigger = <span class="function"><span class="keyword">function</span> (<span class="params">target</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> query = location.href.split(<span class="string">"?"</span>)[<span class="number">1</span>], eleTarget = target || <span class="literal">null</span>;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> query == <span class="string">"undefined"</span>) &#123;</div><div class="line">        <span class="keyword">if</span> (eleTarget = eleMenus.get(<span class="number">0</span>)) &#123;</div><div class="line">            <span class="comment">// 如果没有查询字符，则使用第一个导航元素的查询字符内容</span></div><div class="line">            history.replaceState(<span class="literal">null</span>, <span class="built_in">document</span>.title, location.href.split(<span class="string">"#"</span>)[<span class="number">0</span>] + <span class="string">"?"</span> + eleTarget.href.split(<span class="string">"?"</span>)[<span class="number">1</span>]) + location.hash;</div><div class="line">            fnHashTrigger(eleTarget);</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        eleMenus.each(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">            <span class="keyword">if</span> (eleTarget === <span class="literal">null</span> &amp;&amp; <span class="keyword">this</span>.href.split(<span class="string">"?"</span>)[<span class="number">1</span>] === query) &#123;</div><div class="line">                eleTarget = <span class="keyword">this</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">        <span class="keyword">if</span> (!eleTarget) &#123;</div><div class="line">            <span class="comment">// 如果查询序列没有对应的导航菜单，去除查询然后执行回调</span></div><div class="line">            history.replaceState(<span class="literal">null</span>, <span class="built_in">document</span>.title, location.href.split(<span class="string">"?"</span>)[<span class="number">0</span>]);</div><div class="line">            fnHashTrigger();</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            $(eleTarget).trigger(<span class="string">"click"</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"><span class="keyword">if</span> (history.pushState) &#123;</div><div class="line">    <span class="built_in">window</span>.addEventListener(<span class="string">"popstate"</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">        fnHashTrigger();</div><div class="line">    &#125;);</div><div class="line">    fnHashTrigger();</div><div class="line">&#125;</div><div class="line">&lt;<span class="regexp">/script&gt;</span></div></pre></td></tr></table></figure>
+<h2 id="Demo-地址"><a href="#Demo-地址" class="headerlink" title="Demo 地址"></a>Demo 地址</h2><p>Demo访问地址：<a href="http://qrframe.com/blog/20160711_javascript_web.html">http://qrframe.com/blog/20160711_javascript_web.html</a></p>
+<blockquote>
+<h3 id="引用的文章地址"><a href="#引用的文章地址" class="headerlink" title="引用的文章地址"></a>引用的文章地址</h3><p><a href="http://blog.csdn.net/tianyitianyi1/article/details/7426606" target="_blank" rel="external">HTML5 history新特性pushState、replaceState</a><br><a href="http://www.zhangxinxu.com/wordpress/2013/06/html5-history-api-pushstate-replacestate-ajax/" target="_blank" rel="external">ajax与HTML5 history pushState/replaceState实例</a><br><a href="http://www.cnblogs.com/flash3d/archive/2013/10/23/3384823.html" target="_blank" rel="external">利用pushState开发无刷页面切换</a></p>
+</blockquote>
+
+            <blockquote>
+                <p>
+                本文地址：
+                <a href="http://qrframe.com/2016/07/10/ajax-history-pushState实现页面无刷新可回退效果/" target="_blank" rel="external">http://qrframe.com/2016/07/10/ajax-history-pushState实现页面无刷新可回退效果/</a>
+                </p>
+                <footer><cite><a href="http://qrframe.com">@非空的小站</a></cite></footer>
+            </blockquote>
+            </div>
+            
+<nav class="post-nav">
+  
+    <div class="waves-block waves-effect prev fl">
+      <a href="/2016/07/12/普通人如何合理的理财投资，有哪些书可以学习阅读？/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">普通人如何合理的理财投资，有哪些书可以学习阅读？</h4>
+      </a>
+    </div>
+  
+
+  
+</nav>
+
+
+            
+            
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="ajax-history-pushState实现页面无刷新可回退效果" data-title="ajax+history.pushState实现页面无刷新可回退效果" data-url="http://qrframe.com/2016/07/10/ajax-history-pushState实现页面无刷新可回退效果/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"qrframe"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+        </div>
+    </div>
+</article>
+    </div>
+  </main>
+<div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+<script>
+var BLOG_SHARE = {
+    title: "ajax+history.pushState实现页面无刷新可回退效果",
+    pic: "/img/logo.jpg",
+    summary: document.getElementsByName('summary')[0].content,
+    url: "http://qrframe.com/2016/07/10/ajax-history-pushState实现页面无刷新可回退效果/index.html"
+};
+</script>
+<div class="global-share" id="global-share">
+    <div class="tit">分享到：</div>
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" href="javascript:;" data-title="微博" data-service="tsina">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns" href="javascript:;" data-title="微信" data-service="weixin">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" href="javascript:;" data-title=" QQ" data-service="cqq">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" href="javascript:;" data-title=" Facebook" data-service="fb">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" href="javascript:;" data-title=" Twitter" data-service="twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="douban share-sns" href="javascript:;" data-title="豆瓣" data-service="douban">
+          豆
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<script type="text/template" id="search-tpl">
+<li class="item">
+    <a href="/{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</script>
+
+<script src="/js/search.js"></script>
+
+
+
+
+
+
+
+
+
+</body>
+</html>
