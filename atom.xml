@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://qrframe.com/"/>
-  <updated>2016-07-13T06:51:11.679Z</updated>
+  <updated>2016-07-13T09:55:37.780Z</updated>
   <id>http://qrframe.com/</id>
   
   <author>
@@ -14,6 +14,187 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用Hexo在github上搭建个人网站——操作记录</title>
+    <link href="http://qrframe.com/2016/07/13/%E4%BD%BF%E7%94%A8Hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99%E7%9A%84%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/"/>
+    <id>http://qrframe.com/2016/07/13/使用Hexo在github上搭建个人网站的操作记录/</id>
+    <published>2016-07-13T09:11:42.000Z</published>
+    <updated>2016-07-13T09:55:37.780Z</updated>
+    
+    <content type="html">&lt;p&gt;咋也准备跟着潮流，使用Hexo在github上搭建一个免费的静态博客。以下就是我自己在搭建网站过程中记录的内容。&lt;/p&gt;
+&lt;h2 id=&quot;前提条件&quot;&gt;&lt;a href=&quot;#前提条件&quot; class=&quot;headerlink&quot; title=&quot;前提条件&quot;&gt;&lt;/a&gt;前提条件&lt;/h2&gt;&lt;h3 id=&quot;1、NodeJs&quot;&gt;&lt;a href=&quot;#1、NodeJs&quot; class=&quot;headerlink&quot; title=&quot;1、NodeJs&quot;&gt;&lt;/a&gt;1、NodeJs&lt;/h3&gt;&lt;p&gt;到&lt;a href=&quot;https://nodejs.org&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;NodeJs官网&lt;/a&gt;下载对应平台的最新版本。安装结束后，在cmd控制台输入：&lt;code&gt;node -v&lt;/code&gt;,出现版本提示表示安装成功。&lt;/p&gt;
+&lt;h3 id=&quot;2、Git&quot;&gt;&lt;a href=&quot;#2、Git&quot; class=&quot;headerlink&quot; title=&quot;2、Git&quot;&gt;&lt;/a&gt;2、Git&lt;/h3&gt;&lt;blockquote&gt;
+&lt;h4 id=&quot;在Windows上安装Git&quot;&gt;&lt;a href=&quot;#在Windows上安装Git&quot; class=&quot;headerlink&quot; title=&quot;在Windows上安装Git&quot;&gt;&lt;/a&gt;在Windows上安装Git&lt;/h4&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;从&lt;a href=&quot;https://git-for-windows.github.io&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://git-for-windows.github.io&lt;/a&gt;下载（网速慢的同学请移步&lt;a href=&quot;http://pan.baidu.com/s/1skFLrMt#path=%252Fpub%252Fgit&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;国内镜像&lt;/a&gt;），然后按默认选项安装即可。安装结束后，在开始菜单里找到“Git”-&amp;gt;“Git Bash”，蹦出一个类似命令行窗口的东西，就说明Git安装成功！&lt;br&gt;安装完成后，还需要最后一步设置，在命令行输入：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ git config --global user.name &amp;quot;Your Name&amp;quot;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ git config --global user.email &amp;quot;email@example.com&amp;quot;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;因为Git是分布式版本控制系统，所以，每个机器都必须自报家门：你的名字和Email地址。&lt;br&gt;注意git config命令的–global参数，用了这个参数，表示你这台机器上所有的Git仓库都会使用这个配置，当然也可以对某个仓库指定不同的用户名和Email地址。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;h4 id=&quot;为github帐号添加SSH-keys&quot;&gt;&lt;a href=&quot;#为github帐号添加SSH-keys&quot; class=&quot;headerlink&quot; title=&quot;为github帐号添加SSH keys&quot;&gt;&lt;/a&gt;为github帐号添加SSH keys&lt;/h4&gt;&lt;/blockquote&gt;
+&lt;p&gt;使用git clone命令从github上同步github上的代码库时，如果使用SSH链接（如我自己的esesgrid项目：git@github.com:hmilycc/esesgrid.git），而你的SSH key没有添加到github帐号设置中，系统会报下面的错误：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Permission denied (publickey).fatal: Could not read from remote repository.
+Please make sure you have the correct access rightsand the repository exists.
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这时需要在本地创建SSH key，然后将生成的SSH key文件内容添加到github帐号上去。创建SSH key的方法很简单，执行如下命令就可以：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ ssh-keygen -t rsa -C &amp;quot;qrframe.com&amp;quot;//注意。qrframe.com为用户名&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;然后系统提示输入文件保存位置等信息，连续敲三次回车即可，生成的SSH key文件保存在中～/.ssh/id_rsa.pub&lt;br&gt;接着拷贝.ssh/id_rsa.pub文件内的所以内容，将它粘帖到github帐号管理中的添加SSH key界面中。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;h4 id=&quot;git出现：warning-LF-will-be-replaced-by-CRLF&quot;&gt;&lt;a href=&quot;#git出现：warning-LF-will-be-replaced-by-CRLF&quot; class=&quot;headerlink&quot; title=&quot;git出现：warning: LF will be replaced by CRLF&quot;&gt;&lt;/a&gt;git出现：warning: LF will be replaced by CRLF&lt;/h4&gt;&lt;/blockquote&gt;
+&lt;p&gt;windows中的换行符为 CRLF， 而在linux下的换行符为LF，所以在执行add . 时出现提示，解决办法：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ git config --global core.autocrlf false  //禁用自动转换&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h2 id=&quot;安装Hexo&quot;&gt;&lt;a href=&quot;#安装Hexo&quot; class=&quot;headerlink&quot; title=&quot;安装Hexo&quot;&gt;&lt;/a&gt;安装Hexo&lt;/h2&gt;&lt;p&gt;创建一个文件夹,如blog。定位到新建的blog文件夹，使用 npm 即可完成 Hexo 的安装：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ npm install -g hexo-cli&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;安装 Hexo 完成后，请执行下列命令，Hexo 将会在指定文件夹中新建所需要的文件。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ hexo init &amp;lt;folder&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ npm install&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;新建完成后，指定文件夹的目录如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;.
+├── _config.yml
+├── package.json
+├── scaffolds
+├── source
+|   ├── _drafts
+|   └── _posts
+└── themes
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&quot;config-yml&quot;&gt;&lt;a href=&quot;#config-yml&quot; class=&quot;headerlink&quot; title=&quot;_config.yml&quot;&gt;&lt;/a&gt;_config.yml&lt;/h3&gt;&lt;p&gt;网站的 &lt;a href=&quot;https://hexo.io/zh-cn/docs/configuration.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;配置&lt;/a&gt; 信息，您可以在此配置大部分的参数。&lt;/p&gt;
+&lt;h3 id=&quot;package-json&quot;&gt;&lt;a href=&quot;#package-json&quot; class=&quot;headerlink&quot; title=&quot;package.json&quot;&gt;&lt;/a&gt;package.json&lt;/h3&gt;&lt;p&gt;应用程序的信息。&lt;a href=&quot;http://embeddedjs.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;EJS&lt;/a&gt;, &lt;a href=&quot;http://learnboost.github.io/stylus/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Stylus&lt;/a&gt; 和 &lt;a href=&quot;http://daringfireball.net/projects/markdown/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Markdown&lt;/a&gt; renderer 已默认安装，您可以自由移除。&lt;/p&gt;
+&lt;h3 id=&quot;scaffolds&quot;&gt;&lt;a href=&quot;#scaffolds&quot; class=&quot;headerlink&quot; title=&quot;scaffolds&quot;&gt;&lt;/a&gt;scaffolds&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;https://hexo.io/zh-cn/docs/writing.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;模版&lt;/a&gt; 文件夹。当您新建文章时，Hexo 会根据 scaffold 来建立文件。&lt;/p&gt;
+&lt;h3 id=&quot;source&quot;&gt;&lt;a href=&quot;#source&quot; class=&quot;headerlink&quot; title=&quot;source&quot;&gt;&lt;/a&gt;source&lt;/h3&gt;&lt;p&gt;资源文件夹是存放用户资源的地方。除 &lt;em&gt;posts 文件夹之外，开头命名为 &lt;/em&gt; (下划线)的文件 / 文件夹和隐藏的文件将会被忽略。&lt;strong&gt;Markdown 和 HTML 文件会被解析并放到 public 文件夹，而其他文件会被拷贝过去&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&quot;themes&quot;&gt;&lt;a href=&quot;#themes&quot; class=&quot;headerlink&quot; title=&quot;themes&quot;&gt;&lt;/a&gt;themes&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;https://hexo.io/zh-cn/docs/themes.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;主题&lt;/a&gt; 文件夹。Hexo 会根据主题来生成静态页面。&lt;/p&gt;
+&lt;h3 id=&quot;常用指令&quot;&gt;&lt;a href=&quot;#常用指令&quot; class=&quot;headerlink&quot; title=&quot;常用指令&quot;&gt;&lt;/a&gt;常用指令&lt;/h3&gt;&lt;h4 id=&quot;1、new&quot;&gt;&lt;a href=&quot;#1、new&quot; class=&quot;headerlink&quot; title=&quot;1、new&quot;&gt;&lt;/a&gt;1、new&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ hexo new [layout] &amp;lt;title&amp;gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;新建一篇文章。如果没有设置 layout 的话，默认使用 _config.yml 中的 default_layout 参数代替。如果标题包含空格的话，请使用引号括起来。&lt;/p&gt;
+&lt;h4 id=&quot;2、generate&quot;&gt;&lt;a href=&quot;#2、generate&quot; class=&quot;headerlink&quot; title=&quot;2、generate&quot;&gt;&lt;/a&gt;2、generate&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ hexo generate&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;生成静态文件。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;选项&lt;/th&gt;
+&lt;th style=&quot;text-align:left&quot;&gt;描述&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;-d, –deploy&lt;/td&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;文件生成后立即部署网站&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;-w, –watch&lt;/td&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;监视文件变动&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id=&quot;3、publish&quot;&gt;&lt;a href=&quot;#3、publish&quot; class=&quot;headerlink&quot; title=&quot;3、publish&quot;&gt;&lt;/a&gt;3、publish&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ hexo publish [layout] &amp;lt;filename&amp;gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;发表草稿。&lt;/p&gt;
+&lt;h4 id=&quot;4、server&quot;&gt;&lt;a href=&quot;#4、server&quot; class=&quot;headerlink&quot; title=&quot;4、server&quot;&gt;&lt;/a&gt;4、server&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ hexo server&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;启动服务器。默认情况下，访问网址为： &lt;a href=&quot;http://localhost:4000/。&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://localhost:4000/。&lt;/a&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;选项&lt;/th&gt;
+&lt;th style=&quot;text-align:left&quot;&gt;描述&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;-p, –port&lt;/td&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;重设端口&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;-s, –static&lt;/td&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;只使用静态文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;-l, –log&lt;/td&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;启动日记记录，使用覆盖记录格式&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id=&quot;5、deploy&quot;&gt;&lt;a href=&quot;#5、deploy&quot; class=&quot;headerlink&quot; title=&quot;5、deploy&quot;&gt;&lt;/a&gt;5、deploy&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ hexo deploy&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;部署网站。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;参数&lt;/th&gt;
+&lt;th style=&quot;text-align:left&quot;&gt;描述&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;-g, –generate&lt;/td&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;部署之前预先生成静态文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id=&quot;6、clean&quot;&gt;&lt;a href=&quot;#6、clean&quot; class=&quot;headerlink&quot; title=&quot;6、clean&quot;&gt;&lt;/a&gt;6、clean&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ hexo clean&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;清除缓存文件 (db.json) 和已生成的静态文件 (public)。&lt;/p&gt;
+&lt;h4 id=&quot;7、version&quot;&gt;&lt;a href=&quot;#7、version&quot; class=&quot;headerlink&quot; title=&quot;7、version&quot;&gt;&lt;/a&gt;7、version&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ hexo version&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;显示 Hexo 版本。&lt;/p&gt;
+&lt;h2 id=&quot;配置Github&quot;&gt;&lt;a href=&quot;#配置Github&quot; class=&quot;headerlink&quot; title=&quot;配置Github&quot;&gt;&lt;/a&gt;配置Github&lt;/h2&gt;&lt;p&gt;安装 hexo-deployer-git。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ npm install hexo-deployer-git --save&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;修改配置。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;deploy:
+  type: git
+  repo: &amp;lt;repository url&amp;gt;
+  branch: [branch]
+  message: [message]
+&lt;/code&gt;&lt;/pre&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;参数&lt;/th&gt;
+&lt;th style=&quot;text-align:left&quot;&gt;描述&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;repo&lt;/td&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;库（Repository）地址&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;branch&lt;/td&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;分支名称。如果您使用的是 GitHub 或 GitCafe 的话，程序会尝试自动检测。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;message&lt;/td&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;自定义提交信息 (默认为 Site updated: { { now(‘YYYY-MM-DD HH:mm:ss’) } })&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&quot;使用自定义主题：indigo&quot;&gt;&lt;a href=&quot;#使用自定义主题：indigo&quot; class=&quot;headerlink&quot; title=&quot;使用自定义主题：indigo&quot;&gt;&lt;/a&gt;使用自定义主题：indigo&lt;/h2&gt;&lt;p&gt;Material Design 风格的Hexo主题，基于 Hexo 3.0+ 制作。&lt;/p&gt;
+&lt;h3 id=&quot;主题安装&quot;&gt;&lt;a href=&quot;#主题安装&quot; class=&quot;headerlink&quot; title=&quot;主题安装&quot;&gt;&lt;/a&gt;主题安装&lt;/h3&gt;&lt;p&gt;安装需确认你的 Hexo 版本在 3.0 以上，在 Hexo 根目录，执行以下命令。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ git clone git@github.com:yscoder/hexo-theme-indigo.git themes/indigo&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h3 id=&quot;依赖安装&quot;&gt;&lt;a href=&quot;#依赖安装&quot; class=&quot;headerlink&quot; title=&quot;依赖安装&quot;&gt;&lt;/a&gt;依赖安装&lt;/h3&gt;&lt;p&gt;还是在 Hexo 根目录，如果以下插件已安装过，无需再次安装。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;h4 id=&quot;安装-less&quot;&gt;&lt;a href=&quot;#安装-less&quot; class=&quot;headerlink&quot; title=&quot;安装 less&quot;&gt;&lt;/a&gt;安装 less&lt;/h4&gt;&lt;/blockquote&gt;
+&lt;p&gt;主题默认使用 less 作为 css 预处理工具。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ npm install hexo-renderer-less --save&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;h4 id=&quot;安装-feed&quot;&gt;&lt;a href=&quot;#安装-feed&quot; class=&quot;headerlink&quot; title=&quot;安装 feed&quot;&gt;&lt;/a&gt;安装 feed&lt;/h4&gt;&lt;/blockquote&gt;
+&lt;p&gt;用于生成 rss。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ npm install hexo-generator-feed --save&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;h4 id=&quot;安装-json-content&quot;&gt;&lt;a href=&quot;#安装-json-content&quot; class=&quot;headerlink&quot; title=&quot;安装 json-content&quot;&gt;&lt;/a&gt;安装 json-content&lt;/h4&gt;&lt;/blockquote&gt;
+&lt;p&gt;用于生成静态站点数据，用作站内搜索的数据源。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ npm install hexo-generator-json-content --save&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;h4 id=&quot;开启标签页&quot;&gt;&lt;a href=&quot;#开启标签页&quot; class=&quot;headerlink&quot; title=&quot;开启标签页&quot;&gt;&lt;/a&gt;开启标签页&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ hexo new page tags&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;修改 hexo/source/tags/index.md 的元数据&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;layout: tags
+noDate: true
+comments: false
+---
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;修改主题文件夹下的配置文件 _config.yml&lt;/p&gt;
+&lt;p&gt;每次部署都可按以下步骤来进行。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ hexo clean&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ hexo generate -d&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;md文件正文中如果有双花括号，花括号之间加个空格，否则会被转义，不能正常显示。&lt;br&gt;hexo默认会处理全部markdown和html文件，如果不想让hexo处理你的文件，可以在文件头中加入layout: false。&lt;br&gt;hexo中所有文件的编码格式均是UTF-8&lt;/p&gt;
+&lt;h3 id=&quot;引用的文章地址&quot;&gt;&lt;a href=&quot;#引用的文章地址&quot; class=&quot;headerlink&quot; title=&quot;引用的文章地址&quot;&gt;&lt;/a&gt;引用的文章地址&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Git教程&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://www.jianshu.com/p/465830080ea9&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;HEXO+Github,搭建属于自己的博客&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://hexo.io/zh-cn/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Hexo官网&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://github.com/yscoder/hexo-theme-indigo&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;indigo主题&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://www.tuicool.com/articles/AfQnQjy/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;hexo你的博客&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;咋也准备跟着潮流，使用Hexo在github上搭建一个免费的静态博客。以下就是我自己在搭建网站过程中记录的内容。&lt;/p&gt;
+&lt;h2 id=&quot;前提条件&quot;&gt;&lt;a href=&quot;#前提条件&quot; class=&quot;headerlink&quot; title=&quot;前提条件&quot;&gt;&lt;/a&gt;前提条件&lt;/h2&gt;&lt;h3 id=&quot;1、NodeJs&quot;&gt;&lt;a href=&quot;#1、NodeJs&quot; class=&quot;headerlink&quot; title=&quot;1、NodeJs&quot;&gt;&lt;/a&gt;1、NodeJs&lt;/h3&gt;&lt;p&gt;到&lt;a href=&quot;https://nodejs.org&quot;&gt;NodeJs官网&lt;/a&gt;下载对应平台的最新版本。安装结束后，在cmd控制台输入：&lt;code&gt;node -v&lt;/code&gt;,出现版本提示表示安装成功。&lt;/p&gt;
+&lt;h3 id=&quot;2、Git&quot;&gt;&lt;a href=&quot;#2、Git&quot; class=&quot;headerlink&quot; title=&quot;2、Git&quot;&gt;&lt;/a&gt;2、Git&lt;/h3&gt;&lt;blockquote&gt;
+&lt;h4 id=&quot;在Windows上安装Git&quot;&gt;&lt;a href=&quot;#在Windows上安装Git&quot; class=&quot;headerlink&quot; title=&quot;在Windows上安装Git&quot;&gt;&lt;/a&gt;在Windows上安装Git&lt;/h4&gt;
+    
+    </summary>
+    
+    
+      <category term="Web开发" scheme="http://qrframe.com/tags/Web%E5%BC%80%E5%8F%91/"/>
+    
+      <category term="个人网站" scheme="http://qrframe.com/tags/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/"/>
+    
+  </entry>
   
   <entry>
     <title>普通人如何合理的理财投资，有哪些书可以学习阅读？</title>
