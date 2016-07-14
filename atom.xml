@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://qrframe.com/"/>
-  <updated>2016-07-14T03:51:11.092Z</updated>
+  <updated>2016-07-14T03:55:04.013Z</updated>
   <id>http://qrframe.com/</id>
   
   <author>
@@ -20,56 +20,12 @@
     <link href="http://qrframe.com/2016/07/14/%E3%80%90%E8%BD%AC%E3%80%91%E5%89%8D%E7%AB%AF%E5%85%A5%E9%97%A8%E6%96%B9%E6%B3%95/"/>
     <id>http://qrframe.com/2016/07/14/【转】前端入门方法/</id>
     <published>2016-07-14T03:47:48.000Z</published>
-    <updated>2016-07-14T03:51:11.092Z</updated>
+    <updated>2016-07-14T03:55:04.013Z</updated>
     
     <content type="html">&lt;p&gt;转载请注明出处: &lt;a href=&quot;https://github.com/qiu-deqing/FE-learning&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/qiu-deqing/FE-learning&lt;/a&gt;&lt;/p&gt;
-&lt;!-- START doctoc generated TOC please keep comment here to allow auto update --&gt;
-&lt;!-- DON&#39;T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE --&gt;
-&lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;  &lt;em&gt;generated with &lt;a href=&quot;https://github.com/thlorenz/doctoc&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;DocToc&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#fe-learning&quot;&gt;FE-learning&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#%E5%BF%85%E5%A4%87%E5%9F%BA%E7%A1%80%E6%8A%80%E8%83%BD&quot;&gt;必备基础技能&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E5%9F%BA%E6%9C%AC%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7&quot;&gt;基本开发工具&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E5%92%8C%E5%AD%A6%E4%B9%A0%E7%9B%AE%E6%A0%87&quot;&gt;学习方法和学习目标&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E5%85%A5%E9%97%A8%E4%B9%8B%E8%B7%AF&quot;&gt;入门之路&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E7%BB%A7%E7%BB%AD%E6%8F%90%E9%AB%98&quot;&gt;继续提高&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E4%B8%80%E4%BA%9B%E4%B8%AA%E4%BA%BA%E7%BB%8F%E5%8E%86&quot;&gt;一些个人经历&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#lingyucoderhttpsgithubcomlingyucoder%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%BB%8F%E5%8E%86&quot;&gt;&lt;a href=&quot;https://github.com/LingyuCoder&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;LingyuCoder&lt;/a&gt;的学习经历&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#%E5%B7%A5%E5%85%B7&quot;&gt;工具&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E6%8A%80%E8%83%BD&quot;&gt;技能&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80&quot;&gt;语言基础&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E8%BF%9B%E9%98%B6&quot;&gt;进阶&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E9%A1%B9%E7%9B%AE&quot;&gt;项目&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E6%9C%AA%E6%9D%A5&quot;&gt;未来&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E5%85%B6%E4%BB%96&quot;&gt;其他&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E5%85%A5%E9%97%A8%E4%B9%A6&quot;&gt;入门书&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E4%B8%80%E4%BA%9B%E4%B8%8D%E9%94%99%E7%9A%84%E7%BD%91%E7%AB%99&quot;&gt;一些不错的网站&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E5%8E%86%E7%A8%8B&quot;&gt;历程&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#mrraindrophttpsgithubcommrraindrop%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%BB%8F%E5%8E%86&quot;&gt;&lt;a href=&quot;https://github.com/MrRaindrop&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;MrRaindrop&lt;/a&gt;的学习经历&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#%E7%BC%98%E8%B5%B7&quot;&gt;缘起&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E9%A1%B9%E7%9B%AE%EF%BC%8C%E4%B8%8B%E4%B8%80%E4%B8%AA%E9%A1%B9%E7%9B%AE&quot;&gt;项目，下一个项目&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E6%94%B6%E9%9B%86%E7%99%96%E5%92%8C%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86&quot;&gt;收集癖和知识管理&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E8%B7%9F%E5%AF%B9%E7%A5%9E&quot;&gt;跟对神&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E8%AF%BB%E4%B9%A6&quot;&gt;读书&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E5%89%8D%E7%AB%AF%E7%9A%84%E5%AE%9A%E4%BD%8D&quot;&gt;前端的定位&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E6%9C%80%E5%90%8E&quot;&gt;最后&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#byr%E8%AE%BA%E5%9D%9Byiyizym%E7%9A%84%E5%BB%BA%E8%AE%AE&quot;&gt;byr论坛yiyizym的建议&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;!-- END doctoc generated TOC please keep comment here to allow auto update --&gt;
 &lt;h1 id=&quot;FE-learning&quot;&gt;&lt;a href=&quot;#FE-learning&quot; class=&quot;headerlink&quot; title=&quot;FE-learning&quot;&gt;&lt;/a&gt;FE-learning&lt;/h1&gt;&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/qiu-deqing/FE-learning/master/img/FE.jpg&quot; alt=&quot;FE&quot;&gt;&lt;/p&gt;
 &lt;p&gt;结合个人经历总结的前端入门方法，总结从零基础到具备前端基本技能的道路、学习方法、资料。由于能力有限，不能保证面面俱到，只是作为入门参考，面向初学者，让初学者少走弯路。&lt;/p&gt;
-&lt;p&gt;互联网的快速发展和激烈竞争，用户体验成为一个重要的关注点，导致专业前端工程师成为热门职业，各大公司对前端工程师的需求量都很大，要求也越来越高，优秀的前端工程师更是稀缺。个人感觉前端入门相对容易，但是也需要系统地认真学习，在打好基础后坚持学习，成为优秀前端工程师也只是时间问题。&lt;/p&gt;
-&lt;p&gt;学习任何知识最重要的都是&lt;strong&gt;兴趣&lt;/strong&gt;，如果经过一段时间的学习感觉不喜欢，那可能强迫自己学习是很痛苦的，效果也不会好，毕竟这很可能就是以后很多年生存的技能。不过随着互联网行业的发展，前端必然是Web开发人员需要学习的知识，有时候是没有专业前端工程师一起合作的，所以即使不做专门的前端工程师，掌握基本的前端技能为工作带来方便。&lt;/p&gt;
+&lt;p&gt;互联网的快速发展和激烈竞争，用户体验成为一个重要的关注点，导致专业前端工程师成为热门职业，各大公司对前端工程师的需求量都很大，要求也越来越高，优秀的前端工程师更是稀缺。个人感觉前端入门相对容易，但是也需要系统地认真学习，在打好基础后坚持学习，成为优秀前端工程师也只是时间问题。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;br&gt;学习任何知识最重要的都是&lt;strong&gt;兴趣&lt;/strong&gt;，如果经过一段时间的学习感觉不喜欢，那可能强迫自己学习是很痛苦的，效果也不会好，毕竟这很可能就是以后很多年生存的技能。不过随着互联网行业的发展，前端必然是Web开发人员需要学习的知识，有时候是没有专业前端工程师一起合作的，所以即使不做专门的前端工程师，掌握基本的前端技能为工作带来方便。&lt;/p&gt;
 &lt;p&gt;后期邀请了一些同学分享学习经历。如果有同学愿意分享,欢迎push&lt;/p&gt;
 &lt;h2 id=&quot;必备基础技能&quot;&gt;&lt;a href=&quot;#必备基础技能&quot; class=&quot;headerlink&quot; title=&quot;必备基础技能&quot;&gt;&lt;/a&gt;必备基础技能&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/JacksonTian/fks&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;前端技能汇总&lt;/a&gt;这个项目详细记录&lt;br&gt;了前端工程师牵涉到的各方面知识。在具备基本技能之后可以在里面找到学习&lt;br&gt;的方向，完善技能和知识面。&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://github.com/dypsilon/frontend-dev-bookmarks&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;frontend-dev-bookmarks&lt;/a&gt;是老外总结的前端开发资源。覆盖面非常广。包括各种知识点、工具、技术，非常全面。&lt;/p&gt;
@@ -398,7 +354,10 @@
     
     <summary type="html">
     
-      &lt;p&gt;转载请注明出处: &lt;a href=&quot;https://github.com/qiu-deqing/FE-learning&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/qiu-deqing/FE-learning&lt;/a&gt;
+      &lt;p&gt;转载请注明出处: &lt;a href=&quot;https://github.com/qiu-deqing/FE-learning&quot;&gt;https://github.com/qiu-deqing/FE-learning&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;FE-learning&quot;&gt;&lt;a href=&quot;#FE-learning&quot; class=&quot;headerlink&quot; title=&quot;FE-learning&quot;&gt;&lt;/a&gt;FE-learning&lt;/h1&gt;&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/qiu-deqing/FE-learning/master/img/FE.jpg&quot; alt=&quot;FE&quot;&gt;&lt;/p&gt;
+&lt;p&gt;结合个人经历总结的前端入门方法，总结从零基础到具备前端基本技能的道路、学习方法、资料。由于能力有限，不能保证面面俱到，只是作为入门参考，面向初学者，让初学者少走弯路。&lt;/p&gt;
+&lt;p&gt;互联网的快速发展和激烈竞争，用户体验成为一个重要的关注点，导致专业前端工程师成为热门职业，各大公司对前端工程师的需求量都很大，要求也越来越高，优秀的前端工程师更是稀缺。个人感觉前端入门相对容易，但是也需要系统地认真学习，在打好基础后坚持学习，成为优秀前端工程师也只是时间问题。&lt;br&gt;
     
     </summary>
     
