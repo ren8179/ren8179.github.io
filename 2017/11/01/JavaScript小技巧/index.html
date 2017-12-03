@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>JavaScript小技巧 | 非空的小站 | 记录工作、学习、生活中的点点滴滴</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="theme-color" content="#108DD0">
+  
+  
+  <meta name="keywords" content="Web开发,JavaScript">
+  <meta name="description" content="快速删除数组对象中的重复项123456-- 获取数组对象中需要用到的属性，并生成新的数组对象var items = _this.plans.map(item =&amp;gt; &amp;#123; cid: form.id, mid: item.mid, name: item.name &amp;#125;);var unique = &amp;#123;&amp;#125;;-- 遍历数组，覆盖相同的值items.forEach(i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript小技巧">
+<meta property="og:url" content="http://qrframe.com/2017/11/01/JavaScript小技巧/index.html">
+<meta property="og:site_name" content="非空的小站">
+<meta property="og:description" content="快速删除数组对象中的重复项123456-- 获取数组对象中需要用到的属性，并生成新的数组对象var items = _this.plans.map(item =&amp;gt; &amp;#123; cid: form.id, mid: item.mid, name: item.name &amp;#125;);var unique = &amp;#123;&amp;#125;;-- 遍历数组，覆盖相同的值items.forEach(i">
+<meta property="og:updated_time" content="2017-12-03T08:40:03.750Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript小技巧">
+<meta name="twitter:description" content="快速删除数组对象中的重复项123456-- 获取数组对象中需要用到的属性，并生成新的数组对象var items = _this.plans.map(item =&amp;gt; &amp;#123; cid: form.id, mid: item.mid, name: item.name &amp;#125;);var unique = &amp;#123;&amp;#125;;-- 遍历数组，覆盖相同的值items.forEach(i">
+  
+    <link rel="alternative" href="/atom.xml" title="非空的小站" type="application/atom+xml">
+  
+  <meta name="summary" content="&lt;h1 id=&quot;快速删除数组对象中的重复项&quot;&gt;&lt;a href=&quot;#快速删除数组对象中的重复项&quot; class=&quot;headerlink&quot; title=&quot;快速删除数组对象中的重复项&quot;&gt;&lt;/a&gt;快速删除数组对象中的重复项&lt;/h1&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;-- 获取数组对象中需要用到的属性，并生成新的数组对象&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;var items = _this.plans.map(item =&amp;gt; &amp;#123; cid: form.id, mid: item.mid, name: item.name &amp;#125;);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;var unique = &amp;#123;&amp;#125;;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;-- 遍历数组，覆盖相同的值&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;items.forEach(item=&amp;gt;unique[JSON.stringify(item)] = item);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;items = Object.keys(unique).map(u=&amp;gt;JSON.parse(u) );&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="loading" class="active"></div>
+
+  <nav id="menu" class="hide" >
+   <div class="inner flex-row-vertical">
+  <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+      <i class="icon icon-lg icon-close"></i>
+  </a>
+  <div class="brand-wrap">
+    <div class="brand">
+      <a href="/" class="avatar"><img src="/img/logo.jpg"></a>
+      <hgroup class="introduce">
+        <h5 class="nickname">任琪</h5>
+        <a href="mailto:ren8179@126.com" title="ren8179@126.com" class="mail">ren8179@126.com</a>
+      </hgroup>
+    </div>
+  </div>
+  <ul class="nav flex-col">
+    
+        <li class="waves-block waves-effect">
+          <a href="/"  >
+            <i class="icon icon-lg icon-home"></i>
+            主页
+          </a>
+        </li>
+    
+        <li class="waves-block waves-effect">
+          <a href="/archives"  >
+            <i class="icon icon-lg icon-archives"></i>
+            文章
+          </a>
+        </li>
+    
+        <li class="waves-block waves-effect">
+          <a href="/tags"  >
+            <i class="icon icon-lg icon-tags"></i>
+            标签
+          </a>
+        </li>
+    
+        <li class="waves-block waves-effect">
+          <a href="https://github.com/ren8179" target="_blank" >
+            <i class="icon icon-lg icon-github"></i>
+            Github
+          </a>
+        </li>
+    
+        <li class="waves-block waves-effect">
+          <a href="/about"  >
+            <i class="icon icon-lg icon-link"></i>
+            关于
+          </a>
+        </li>
+    
+  </ul>
+
+  <footer class="footer">
+  <p><a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0;vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAPCAMAAABEF7i9AAAAllBMVEUAAAD///+rsapERER3d3eIiIjMzMzu7u4iIiKUmZO6v7rKzsoODg4RERFVVVUNDQ0NDg0PEA8zMzNLTEtbXltmZmZydnF9gn2AgICPkI+ZmZmqqqq7u7vFxsXIzMgNDQwZGRkgICAhISEkJSMnKCcuMC4xMzE5Ozk7PTtBQkFCQkJDQ0Nna2eGhoaHh4ezuLLGysbd3d1wVGpAAAAA4UlEQVR42q2T1xqCMAyFk7QsBQeKA9x7j/d/OSm22CpX0nzcpA1/T05aAOuBVkMAScQFHLnEwoCo2f1TnQIGoVMewjZEjVFN4GH1Ue1Cn2jWqwfsOOj6wDwGvotsl/c8lv7KIq1eLOsT0HMFHMIE/RZyHnlphryT9zyV+8WH5e8yQw3wnQvgAFxPTKUVi555SHR/lOfLMgVTeDlSfN+TaoUsiTyeIm+bCkHvCA2FUKG48LDtYBZBknsYP/G8NTw0gaaHyuQf4H5pecrB/FYCT2sL9zAfy1Xyjou6L8X2W7YcLyBZCRtnq/zfAAAAAElFTkSuQmCC" /></a></p>
+  <p>非空的小站 &copy; 2017</p>
+  <p>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme
+  <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></p>
+  <a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-2x icon-rss-square"></i></a>
+</footer>
+
+</div>
+
+  </nav>
+  <main id="main">
+    <header class="header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">JavaScript小技巧</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-share">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header">
+  <div class="container">
+    <h1 class="author">JavaScript小技巧</h1>
+    <h5 class="subtitle">
+          
+            <time datetime="2017-11-01T08:38:55.000Z" itemprop="datePublished" class="page-time">
+  2017-11-01
+</time>
+
+ 
+        
+    </h5>
+  </div>
+</header>
+
+    <div class="container body-wrap">
+      <article id="post-JavaScript小技巧" 
+  class="article article-type-post" itemprop="blogPost">
+    <div class="post-meat flex-row">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web开发/">Web开发</a></li></ul>
+
+    </div>
+    <div class="post-body">
+        <aside class="post-widget" id="post-widget">
+
+            
+            <div class="post-share" id="post-share">
+    <div class="tit">分享到：</div>
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" href="javascript:;" data-title="微博" data-service="tsina">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns" href="javascript:;" data-title="微信" data-service="weixin">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" href="javascript:;" data-title=" QQ" data-service="cqq">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" href="javascript:;" data-title=" Facebook" data-service="fb">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" href="javascript:;" data-title=" Twitter" data-service="twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="douban share-sns" href="javascript:;" data-title="豆瓣" data-service="douban">
+          豆
+        </a>
+      </li>
+    </ul>
+ </div>
+
+            
+
+            
+            <nav class="post-toc-wrap" id="post-toc">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#快速删除数组对象中的重复项"><span class="post-toc-text">快速删除数组对象中的重复项</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#根据条件删除数组中的指定行"><span class="post-toc-text">根据条件删除数组中的指定行</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#将url的查询参数解析成字典对象"><span class="post-toc-text">将url的查询参数解析成字典对象</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#金额格式修改"><span class="post-toc-text">金额格式修改</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#格式化字符串"><span class="post-toc-text">格式化字符串</span></a></li></ol>
+            </nav>
+            
+        </aside>
+
+        <div class="post-main">
+
+            <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="快速删除数组对象中的重复项"><a href="#快速删除数组对象中的重复项" class="headerlink" title="快速删除数组对象中的重复项"></a>快速删除数组对象中的重复项</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">-- 获取数组对象中需要用到的属性，并生成新的数组对象</div><div class="line">var items = _this.plans.map(item =&gt; &#123; cid: form.id, mid: item.mid, name: item.name &#125;);</div><div class="line">var unique = &#123;&#125;;</div><div class="line">-- 遍历数组，覆盖相同的值</div><div class="line">items.forEach(item=&gt;unique[JSON.stringify(item)] = item);</div><div class="line">items = Object.keys(unique).map(u=&gt;JSON.parse(u) );</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h1 id="根据条件删除数组中的指定行"><a href="#根据条件删除数组中的指定行" class="headerlink" title="根据条件删除数组中的指定行"></a>根据条件删除数组中的指定行</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line">* Comments:判断某列的值是否为空，如果为空，则删除指定行</div><div class="line">* Param list :  要操作的数组</div><div class="line">* Param col : 列名 默认为：matDetailId</div><div class="line">* Param index : 要删除的行 默认为：数组的最后一行</div><div class="line">* @Return void</div><div class="line">*/</div><div class="line">function clearRow(list, col, index) &#123;</div><div class="line">    col = col || &apos;matDetailId&apos;;</div><div class="line">    index = index || (list.length - 1);</div><div class="line">    if (list.some(item =&gt; !item[col])) list.splice(index, 1);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="将url的查询参数解析成字典对象"><a href="#将url的查询参数解析成字典对象" class="headerlink" title="将url的查询参数解析成字典对象"></a>将url的查询参数解析成字典对象</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">//将url的查询参数解析成字典对象</div><div class="line">function getQueryObject(url) &#123;</div><div class="line">    //将url的查询参数解析成字典对象</div><div class="line">    url = url == null ? location.search : url; //获取url中&quot;?&quot;符后的字串</div><div class="line">    var urlParams = &#123;&#125;;</div><div class="line">    var match,</div><div class="line">        pl = /\+/g,  // Regex for replacing addition symbol with a space</div><div class="line">        search = /([^&amp;=]+)=?([^&amp;]*)/g,</div><div class="line">        decode = function (s) &#123; return decodeURIComponent(s.replace(pl, &quot; &quot;)); &#125;,</div><div class="line">        query = url.substring(1);</div><div class="line">    while (match = search.exec(query))</div><div class="line">        urlParams[decode(match[1])] = decode(match[2]);</div><div class="line">    return urlParams;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="金额格式修改"><a href="#金额格式修改" class="headerlink" title="金额格式修改"></a>金额格式修改</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">// 金额格式修改</div><div class="line">// usage: formatCurrency(number, decimalPlaces, symbol, thousandsSeparator, decimalSeparator)</div><div class="line">// defaults: (1000, 2, &quot;$&quot;, &quot;,&quot;, &quot;.&quot;)</div><div class="line">formatCurrency: function (number, places, symbol, thousand, decimal) &#123;</div><div class="line">    number = number || 0;</div><div class="line">    places = !isNaN(places = Math.abs(places)) ? places : 2;</div><div class="line">    symbol = symbol !== undefined ? symbol : &quot;$&quot;;</div><div class="line">    thousand = thousand || &quot;,&quot;;</div><div class="line">    decimal = decimal || &quot;.&quot;;</div><div class="line">    var negative = number &lt; 0 ? &quot;-&quot; : &quot;&quot;,</div><div class="line">        i = parseInt(number = Math.abs(+number || 0).toFixed(places), 10) + &quot;&quot;,</div><div class="line">        j = (j = i.length) &gt; 3 ? j % 3 : 0;</div><div class="line">    return symbol + negative + (j ? i.substr(0, j) + thousand : &quot;&quot;) + i.substr(j).replace(/(\d&#123;3&#125;)(?=\d)/g, &quot;$1&quot; + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : &quot;&quot;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="格式化字符串"><a href="#格式化字符串" class="headerlink" title="格式化字符串"></a>格式化字符串</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">String.prototype.format = function (args) &#123;</div><div class="line">    var result = this;</div><div class="line">    if (arguments.length &gt; 0) &#123;</div><div class="line">        if (arguments.length == 1 &amp;&amp; typeof (args) == &quot;object&quot;) &#123;</div><div class="line">            for (var key in args) &#123;</div><div class="line">                if (args[key] != undefined) &#123;</div><div class="line">                    var reg = new RegExp(&quot;(&#123;&quot; + key + &quot;&#125;)&quot;, &quot;g&quot;);</div><div class="line">                    result = result.replace(reg, args[key]);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        else &#123;</div><div class="line">            for (var i = 0; i &lt; arguments.length; i++) &#123;</div><div class="line">                if (arguments[i] != undefined) &#123;</div><div class="line">                    var reg = new RegExp(&quot;(&#123;)&quot; + i + &quot;(&#125;)&quot;, &quot;g&quot;);</div><div class="line">                    result = result.replace(reg, arguments[i]);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    return result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+            <blockquote>
+                <p>
+                本文地址：
+                <a href="http://qrframe.com/2017/11/01/JavaScript小技巧/" target="_blank" rel="external">http://qrframe.com/2017/11/01/JavaScript小技巧/</a>
+                </p>
+                <footer><cite><a href="http://qrframe.com">@非空的小站</a></cite></footer>
+            </blockquote>
+            </div>
+            
+<nav class="post-nav">
+  
+
+  
+    <div class="waves-block waves-effect next fr">
+      <a href="/2017/10/25/Visual-Studio-Code-扩展推荐/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Visual Studio Code 扩展推荐</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+            
+            
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="JavaScript小技巧" data-title="JavaScript小技巧" data-url="http://qrframe.com/2017/11/01/JavaScript小技巧/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ren8179"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+        </div>
+    </div>
+</article>
+    </div>
+  </main>
+<div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+<script>
+var BLOG_SHARE = {
+    title: "JavaScript小技巧",
+    pic: "/img/logo.jpg",
+    summary: document.getElementsByName('summary')[0].content,
+    url: "http://qrframe.com/2017/11/01/JavaScript小技巧/index.html"
+};
+</script>
+<div class="global-share" id="global-share">
+    <div class="tit">分享到：</div>
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" href="javascript:;" data-title="微博" data-service="tsina">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns" href="javascript:;" data-title="微信" data-service="weixin">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" href="javascript:;" data-title=" QQ" data-service="cqq">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" href="javascript:;" data-title=" Facebook" data-service="fb">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" href="javascript:;" data-title=" Twitter" data-service="twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="douban share-sns" href="javascript:;" data-title="豆瓣" data-service="douban">
+          豆
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<script type="text/template" id="search-tpl">
+<li class="item">
+    <a href="/{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</script>
+
+<script src="/js/search.js"></script>
+
+
+
+
+
+
+
+
+
+</body>
+</html>

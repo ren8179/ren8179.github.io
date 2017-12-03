@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>ABP框架使用总结之使用Axios来导出Excel | 非空的小站 | 记录工作、学习、生活中的点点滴滴</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="theme-color" content="#108DD0">
+  
+  
+  <meta name="keywords" content="ABP">
+  <meta name="description" content="需求说明
+点击按钮，获取页面form表单的数据，发送到服务器生成Excel文档并下载到客户端。
+
+如果参数比较简单，我们可以直接通过GET请求访问生成Excel文档的Action。如：1location.href = abp.appPath + &amp;apos;Service/Export?input=&amp;apos; + result;
+但是，如果参数比较复杂，且数量较多，继续使用这种方式则显得比较繁琐">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ABP框架使用总结之使用Axios来导出Excel">
+<meta property="og:url" content="http://qrframe.com/2017/09/25/ABP框架使用总结之使用Axios来导出Excel/index.html">
+<meta property="og:site_name" content="非空的小站">
+<meta property="og:description" content="需求说明
+点击按钮，获取页面form表单的数据，发送到服务器生成Excel文档并下载到客户端。
+
+如果参数比较简单，我们可以直接通过GET请求访问生成Excel文档的Action。如：1location.href = abp.appPath + &amp;apos;Service/Export?input=&amp;apos; + result;
+但是，如果参数比较复杂，且数量较多，继续使用这种方式则显得比较繁琐">
+<meta property="og:updated_time" content="2017-12-03T08:31:53.443Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ABP框架使用总结之使用Axios来导出Excel">
+<meta name="twitter:description" content="需求说明
+点击按钮，获取页面form表单的数据，发送到服务器生成Excel文档并下载到客户端。
+
+如果参数比较简单，我们可以直接通过GET请求访问生成Excel文档的Action。如：1location.href = abp.appPath + &amp;apos;Service/Export?input=&amp;apos; + result;
+但是，如果参数比较复杂，且数量较多，继续使用这种方式则显得比较繁琐">
+  
+    <link rel="alternative" href="/atom.xml" title="非空的小站" type="application/atom+xml">
+  
+  <meta name="summary" content="&lt;h2 id=&quot;需求说明&quot;&gt;&lt;a href=&quot;#需求说明&quot; class=&quot;headerlink&quot; title=&quot;需求说明&quot;&gt;&lt;/a&gt;需求说明&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;点击按钮，获取页面form表单的数据，发送到服务器生成Excel文档并下载到客户端。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;如果参数比较简单，我们可以直接通过GET请求访问生成Excel文档的Action。如：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;location.href = abp.appPath + &amp;apos;Service/Export?input=&amp;apos; + result;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;但是，如果参数比较复杂，且数量较多，继续使用这种方式则显得比较繁琐，并且容易报错。&lt;br&gt;此时，我们可以迂回一下，先把请求参数缓存到服务器，然后在生成Excel时从缓存获取参数。&lt;br&gt;">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="loading" class="active"></div>
+
+  <nav id="menu" class="hide" >
+   <div class="inner flex-row-vertical">
+  <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+      <i class="icon icon-lg icon-close"></i>
+  </a>
+  <div class="brand-wrap">
+    <div class="brand">
+      <a href="/" class="avatar"><img src="/img/logo.jpg"></a>
+      <hgroup class="introduce">
+        <h5 class="nickname">任琪</h5>
+        <a href="mailto:ren8179@126.com" title="ren8179@126.com" class="mail">ren8179@126.com</a>
+      </hgroup>
+    </div>
+  </div>
+  <ul class="nav flex-col">
+    
+        <li class="waves-block waves-effect">
+          <a href="/"  >
+            <i class="icon icon-lg icon-home"></i>
+            主页
+          </a>
+        </li>
+    
+        <li class="waves-block waves-effect">
+          <a href="/archives"  >
+            <i class="icon icon-lg icon-archives"></i>
+            文章
+          </a>
+        </li>
+    
+        <li class="waves-block waves-effect">
+          <a href="/tags"  >
+            <i class="icon icon-lg icon-tags"></i>
+            标签
+          </a>
+        </li>
+    
+        <li class="waves-block waves-effect">
+          <a href="https://github.com/ren8179" target="_blank" >
+            <i class="icon icon-lg icon-github"></i>
+            Github
+          </a>
+        </li>
+    
+        <li class="waves-block waves-effect">
+          <a href="/about"  >
+            <i class="icon icon-lg icon-link"></i>
+            关于
+          </a>
+        </li>
+    
+  </ul>
+
+  <footer class="footer">
+  <p><a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0;vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAPCAMAAABEF7i9AAAAllBMVEUAAAD///+rsapERER3d3eIiIjMzMzu7u4iIiKUmZO6v7rKzsoODg4RERFVVVUNDQ0NDg0PEA8zMzNLTEtbXltmZmZydnF9gn2AgICPkI+ZmZmqqqq7u7vFxsXIzMgNDQwZGRkgICAhISEkJSMnKCcuMC4xMzE5Ozk7PTtBQkFCQkJDQ0Nna2eGhoaHh4ezuLLGysbd3d1wVGpAAAAA4UlEQVR42q2T1xqCMAyFk7QsBQeKA9x7j/d/OSm22CpX0nzcpA1/T05aAOuBVkMAScQFHLnEwoCo2f1TnQIGoVMewjZEjVFN4GH1Ue1Cn2jWqwfsOOj6wDwGvotsl/c8lv7KIq1eLOsT0HMFHMIE/RZyHnlphryT9zyV+8WH5e8yQw3wnQvgAFxPTKUVi555SHR/lOfLMgVTeDlSfN+TaoUsiTyeIm+bCkHvCA2FUKG48LDtYBZBknsYP/G8NTw0gaaHyuQf4H5pecrB/FYCT2sL9zAfy1Xyjou6L8X2W7YcLyBZCRtnq/zfAAAAAElFTkSuQmCC" /></a></p>
+  <p>非空的小站 &copy; 2017</p>
+  <p>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme
+  <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></p>
+  <a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-2x icon-rss-square"></i></a>
+</footer>
+
+</div>
+
+  </nav>
+  <main id="main">
+    <header class="header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">ABP框架使用总结之使用Axios来导出Excel</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-share">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header">
+  <div class="container">
+    <h1 class="author">ABP框架使用总结之使用Axios来导出Excel</h1>
+    <h5 class="subtitle">
+          
+            <time datetime="2017-09-25T08:30:42.000Z" itemprop="datePublished" class="page-time">
+  2017-09-25
+</time>
+
+ 
+        
+    </h5>
+  </div>
+</header>
+
+    <div class="container body-wrap">
+      <article id="post-ABP框架使用总结之使用Axios来导出Excel" 
+  class="article article-type-post" itemprop="blogPost">
+    <div class="post-meat flex-row">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ABP/">ABP</a></li></ul>
+
+    </div>
+    <div class="post-body">
+        <aside class="post-widget" id="post-widget">
+
+            
+            <div class="post-share" id="post-share">
+    <div class="tit">分享到：</div>
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" href="javascript:;" data-title="微博" data-service="tsina">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns" href="javascript:;" data-title="微信" data-service="weixin">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" href="javascript:;" data-title=" QQ" data-service="cqq">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" href="javascript:;" data-title=" Facebook" data-service="fb">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" href="javascript:;" data-title=" Twitter" data-service="twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="douban share-sns" href="javascript:;" data-title="豆瓣" data-service="douban">
+          豆
+        </a>
+      </li>
+    </ul>
+ </div>
+
+            
+
+            
+            <nav class="post-toc-wrap" id="post-toc">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#需求说明"><span class="post-toc-text">需求说明</span></a></li></ol>
+            </nav>
+            
+        </aside>
+
+        <div class="post-main">
+
+            <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="需求说明"><a href="#需求说明" class="headerlink" title="需求说明"></a>需求说明</h2><blockquote>
+<p>点击按钮，获取页面form表单的数据，发送到服务器生成Excel文档并下载到客户端。</p>
+</blockquote>
+<p>如果参数比较简单，我们可以直接通过GET请求访问生成Excel文档的Action。如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">location.href = abp.appPath + &apos;Service/Export?input=&apos; + result;</div></pre></td></tr></table></figure></p>
+<p>但是，如果参数比较复杂，且数量较多，继续使用这种方式则显得比较繁琐，并且容易报错。<br>此时，我们可以迂回一下，先把请求参数缓存到服务器，然后在生成Excel时从缓存获取参数。<br><a id="more"></a><br>以下是具体的实现：</p>
+<p>前台页面中导出按钮的点击事件代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">//先请求SaveData接口来缓存参数，然后用返回的result作为参数访问Export来导出Excel文档</div><div class="line">_this.genDatas(function (result) &#123;</div><div class="line">       //result 生成的表单数据</div><div class="line">       axios.post(abp.appPath + &apos;Service/SaveData&apos;, result).then(function (result) &#123;</div><div class="line">              _this.matloading = false;</div><div class="line">              location.href = abp.appPath + &apos;Service/Export?input=&apos; + result;</div><div class="line">       &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>Controller 代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div></pre></td><td class="code"><pre><div class="line">public class ServiceController : ControllerBase</div><div class="line">    &#123;</div><div class="line">        protected readonly IServiceAppService _serviceAppService;</div><div class="line">        private readonly ICacheManager _cacheManager;</div><div class="line">        public SendServiceController(IServiceAppService serviceAppService, ICacheManager cacheManager)</div><div class="line">        &#123;</div><div class="line">            _cacheManager = cacheManager;</div><div class="line">            _serviceAppService = serviceAppService;</div><div class="line">        &#125;</div><div class="line">        /// &lt;summary&gt;</div><div class="line">        /// 缓存参数，并返回No</div><div class="line">        /// &lt;/summary&gt;</div><div class="line">        [System.Web.Http.HttpPost]</div><div class="line">        public JsonResult SaveData(InputDto input)</div><div class="line">        &#123;</div><div class="line">            AsyncHelper.RunSync(()=&gt;_cacheManager.GetCache(&quot;Export&quot;).SetAsync(input.No, input, TimeSpan.FromMinutes(10)));</div><div class="line">            return Json(input.No, JsonRequestBehavior.AllowGet);</div><div class="line">        &#125;</div><div class="line">        /// &lt;summary&gt;</div><div class="line">        /// 导出Excel</div><div class="line">        /// &lt;/summary&gt;</div><div class="line">        public FileResult Export(string input)</div><div class="line">        &#123;</div><div class="line">            try</div><div class="line">            &#123;</div><div class="line">                var items = _cacheManager.GetCache(&quot;Export&quot;).GetOrDefault&lt;string, InputDto&gt;(input);</div><div class="line">                var model = _serviceAppService.GetExportInfo(items);</div><div class="line">                HSSFWorkbook workbook = new HSSFWorkbook();</div><div class="line">                BuildExcel(workbook.CreateSheet(&quot;物品汇总列表&quot;), model.Details.ToArray());</div><div class="line">                Stream ms = new MemoryStream();</div><div class="line">                workbook.Write(ms);</div><div class="line">                ms.Seek(0, SeekOrigin.Begin);</div><div class="line">                return File(ms, &quot;application/ms-excel&quot;, &quot;物品列表.xls&quot;);</div><div class="line">            &#125;</div><div class="line">            catch (Exception ex)</div><div class="line">            &#123;</div><div class="line">                throw new Exception(&quot;生成Excel出错&quot;, ex);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">        &#125;</div><div class="line">        /// &lt;summary&gt;</div><div class="line">        /// 生成Excel 只生成带有[DisplayName]特性的字段</div><div class="line">        /// &lt;/summary&gt;</div><div class="line">        public void BuildExcel&lt;T&gt;(ISheet sheet,T[] list) where T : new()</div><div class="line">        &#123;</div><div class="line">            var properties = typeof(T).GetProperties();</div><div class="line">            for (int num = 0; num &lt;= list.Length; num++)</div><div class="line">            &#123;</div><div class="line">                var model = num == 0 ? new T() : list[num - 1];</div><div class="line">                IRow row = sheet.CreateRow(num);</div><div class="line">                var cellCol = 0;</div><div class="line">                for (int index = 0; index &lt; properties.Length; index++)</div><div class="line">                &#123;</div><div class="line">                    var property = properties[index];</div><div class="line">                    var attr = property.GetCustomAttribute&lt;DisplayNameAttribute&gt;();</div><div class="line">                    if (attr == null)</div><div class="line">                        continue;</div><div class="line">                    if (num == 0)</div><div class="line">                    &#123;</div><div class="line">                        row.CreateCell(cellCol).SetCellValue(attr.DisplayName);</div><div class="line">                        cellCol++;</div><div class="line">                        continue;</div><div class="line">                    &#125;</div><div class="line">                    var value = property.GetValue(model, null) ?? &quot;&quot;;</div><div class="line">                    switch (property.PropertyType.ToString())</div><div class="line">                    &#123;</div><div class="line">                        case &quot;System.Boolean&quot;:</div><div class="line">                            row.CreateCell(cellCol).SetCellValue(Convert.ToBoolean(value));</div><div class="line">                            break;</div><div class="line">                        case &quot;System.DateTime&quot;:</div><div class="line">                            row.CreateCell(cellCol).SetCellValue(Convert.ToDateTime(value).ToString(&quot;yyyy-MM-dd hh:mm:ss&quot;));</div><div class="line">                            break;</div><div class="line">                        case &quot;System.Double&quot;:</div><div class="line">                        case &quot;System.Int32&quot;:</div><div class="line">                        case &quot;System.Decimal&quot;:</div><div class="line">                            row.CreateCell(cellCol).SetCellValue(Convert.ToDouble(value));</div><div class="line">                            break;</div><div class="line">                        default:</div><div class="line">                            row.CreateCell(cellCol).SetCellValue(value.ToString());</div><div class="line">                            break;</div><div class="line">                    &#125;</div><div class="line">                    cellCol++;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;  </div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+
+            <blockquote>
+                <p>
+                本文地址：
+                <a href="http://qrframe.com/2017/09/25/ABP框架使用总结之使用Axios来导出Excel/" target="_blank" rel="external">http://qrframe.com/2017/09/25/ABP框架使用总结之使用Axios来导出Excel/</a>
+                </p>
+                <footer><cite><a href="http://qrframe.com">@非空的小站</a></cite></footer>
+            </blockquote>
+            </div>
+            
+<nav class="post-nav">
+  
+    <div class="waves-block waves-effect prev fl">
+      <a href="/2017/10/12/前后端分离的架构设计分析/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">前后端分离的架构设计分析</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next fr">
+      <a href="/2017/08/01/基于Token的WEB认证机制/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">基于Token的WEB认证机制</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+            
+            
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="ABP框架使用总结之使用Axios来导出Excel" data-title="ABP框架使用总结之使用Axios来导出Excel" data-url="http://qrframe.com/2017/09/25/ABP框架使用总结之使用Axios来导出Excel/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ren8179"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+        </div>
+    </div>
+</article>
+    </div>
+  </main>
+<div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+<script>
+var BLOG_SHARE = {
+    title: "ABP框架使用总结之使用Axios来导出Excel",
+    pic: "/img/logo.jpg",
+    summary: document.getElementsByName('summary')[0].content,
+    url: "http://qrframe.com/2017/09/25/ABP框架使用总结之使用Axios来导出Excel/index.html"
+};
+</script>
+<div class="global-share" id="global-share">
+    <div class="tit">分享到：</div>
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" href="javascript:;" data-title="微博" data-service="tsina">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns" href="javascript:;" data-title="微信" data-service="weixin">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" href="javascript:;" data-title=" QQ" data-service="cqq">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" href="javascript:;" data-title=" Facebook" data-service="fb">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" href="javascript:;" data-title=" Twitter" data-service="twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="douban share-sns" href="javascript:;" data-title="豆瓣" data-service="douban">
+          豆
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<script type="text/template" id="search-tpl">
+<li class="item">
+    <a href="/{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</script>
+
+<script src="/js/search.js"></script>
+
+
+
+
+
+
+
+
+
+</body>
+</html>

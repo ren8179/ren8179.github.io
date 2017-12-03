@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>前后端分离的架构设计分析 | 非空的小站 | 记录工作、学习、生活中的点点滴滴</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="theme-color" content="#108DD0">
+  
+  
+  <meta name="keywords" content="架构设计">
+  <meta name="description" content="什么是前后端分离每个人对于前后端分离的理解都不太一样，大多数人会从物理层做区分，认为客户端的部分是前端，服务器端的部分是后端。但是，更为准确的分法是从职责上区分：
+
+负责交互与展示的部分为前端
+提供数据，处理业务的部分为后端
+
+前后端分离意味着，前后端之间只通过API交互。从此，后端选用的技术栈不影响前端。当后端开发人员选择 Java 的时候，我可以不用 JSP 来编写前端页面，继续使用我的 Re">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前后端分离的架构设计分析">
+<meta property="og:url" content="http://qrframe.com/2017/10/12/前后端分离的架构设计分析/index.html">
+<meta property="og:site_name" content="非空的小站">
+<meta property="og:description" content="什么是前后端分离每个人对于前后端分离的理解都不太一样，大多数人会从物理层做区分，认为客户端的部分是前端，服务器端的部分是后端。但是，更为准确的分法是从职责上区分：
+
+负责交互与展示的部分为前端
+提供数据，处理业务的部分为后端
+
+前后端分离意味着，前后端之间只通过API交互。从此，后端选用的技术栈不影响前端。当后端开发人员选择 Java 的时候，我可以不用 JSP 来编写前端页面，继续使用我的 Re">
+<meta property="og:updated_time" content="2017-12-03T08:34:02.839Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前后端分离的架构设计分析">
+<meta name="twitter:description" content="什么是前后端分离每个人对于前后端分离的理解都不太一样，大多数人会从物理层做区分，认为客户端的部分是前端，服务器端的部分是后端。但是，更为准确的分法是从职责上区分：
+
+负责交互与展示的部分为前端
+提供数据，处理业务的部分为后端
+
+前后端分离意味着，前后端之间只通过API交互。从此，后端选用的技术栈不影响前端。当后端开发人员选择 Java 的时候，我可以不用 JSP 来编写前端页面，继续使用我的 Re">
+  
+    <link rel="alternative" href="/atom.xml" title="非空的小站" type="application/atom+xml">
+  
+  <meta name="summary" content="&lt;h1 id=&quot;什么是前后端分离&quot;&gt;&lt;a href=&quot;#什么是前后端分离&quot; class=&quot;headerlink&quot; title=&quot;什么是前后端分离&quot;&gt;&lt;/a&gt;什么是前后端分离&lt;/h1&gt;&lt;p&gt;每个人对于前后端分离的理解都不太一样，大多数人会从物理层做区分，认为客户端的部分是前端，服务器端的部分是后端。但是，更为准确的分法是从职责上区分：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;负责交互与展示的部分为前端&lt;/li&gt;
+&lt;li&gt;提供数据，处理业务的部分为后端&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;前后端分离意味着，前后端之间只通过API交互。从此，后端选用的技术栈不影响前端。当后端开发人员选择 Java 的时候，我可以不用 JSP 来编写前端页面，继续使用我的 React 又或者 Vue。而我使用 React 时，也不影响后端使用某一个框架。&lt;br&gt;前后端分离是在于技术架构上，而不是组织/流程、职位/工种的分离。所有组织/流程、职位/工种的限定，是为了更好的协作，而不应该限制人能力的发挥。如果人的能力强，当然可以全栈开发。且小团队肯定效率更高。反过来，跨部门联调这种事情，必定非常低效，且多后患，应极力避免。&lt;br&gt;">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="loading" class="active"></div>
+
+  <nav id="menu" class="hide" >
+   <div class="inner flex-row-vertical">
+  <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+      <i class="icon icon-lg icon-close"></i>
+  </a>
+  <div class="brand-wrap">
+    <div class="brand">
+      <a href="/" class="avatar"><img src="/img/logo.jpg"></a>
+      <hgroup class="introduce">
+        <h5 class="nickname">任琪</h5>
+        <a href="mailto:ren8179@126.com" title="ren8179@126.com" class="mail">ren8179@126.com</a>
+      </hgroup>
+    </div>
+  </div>
+  <ul class="nav flex-col">
+    
+        <li class="waves-block waves-effect">
+          <a href="/"  >
+            <i class="icon icon-lg icon-home"></i>
+            主页
+          </a>
+        </li>
+    
+        <li class="waves-block waves-effect">
+          <a href="/archives"  >
+            <i class="icon icon-lg icon-archives"></i>
+            文章
+          </a>
+        </li>
+    
+        <li class="waves-block waves-effect">
+          <a href="/tags"  >
+            <i class="icon icon-lg icon-tags"></i>
+            标签
+          </a>
+        </li>
+    
+        <li class="waves-block waves-effect">
+          <a href="https://github.com/ren8179" target="_blank" >
+            <i class="icon icon-lg icon-github"></i>
+            Github
+          </a>
+        </li>
+    
+        <li class="waves-block waves-effect">
+          <a href="/about"  >
+            <i class="icon icon-lg icon-link"></i>
+            关于
+          </a>
+        </li>
+    
+  </ul>
+
+  <footer class="footer">
+  <p><a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0;vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAPCAMAAABEF7i9AAAAllBMVEUAAAD///+rsapERER3d3eIiIjMzMzu7u4iIiKUmZO6v7rKzsoODg4RERFVVVUNDQ0NDg0PEA8zMzNLTEtbXltmZmZydnF9gn2AgICPkI+ZmZmqqqq7u7vFxsXIzMgNDQwZGRkgICAhISEkJSMnKCcuMC4xMzE5Ozk7PTtBQkFCQkJDQ0Nna2eGhoaHh4ezuLLGysbd3d1wVGpAAAAA4UlEQVR42q2T1xqCMAyFk7QsBQeKA9x7j/d/OSm22CpX0nzcpA1/T05aAOuBVkMAScQFHLnEwoCo2f1TnQIGoVMewjZEjVFN4GH1Ue1Cn2jWqwfsOOj6wDwGvotsl/c8lv7KIq1eLOsT0HMFHMIE/RZyHnlphryT9zyV+8WH5e8yQw3wnQvgAFxPTKUVi555SHR/lOfLMgVTeDlSfN+TaoUsiTyeIm+bCkHvCA2FUKG48LDtYBZBknsYP/G8NTw0gaaHyuQf4H5pecrB/FYCT2sL9zAfy1Xyjou6L8X2W7YcLyBZCRtnq/zfAAAAAElFTkSuQmCC" /></a></p>
+  <p>非空的小站 &copy; 2017</p>
+  <p>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme
+  <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></p>
+  <a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-2x icon-rss-square"></i></a>
+</footer>
+
+</div>
+
+  </nav>
+  <main id="main">
+    <header class="header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">前后端分离的架构设计分析</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input " autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-share">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header">
+  <div class="container">
+    <h1 class="author">前后端分离的架构设计分析</h1>
+    <h5 class="subtitle">
+          
+            <time datetime="2017-10-12T08:32:57.000Z" itemprop="datePublished" class="page-time">
+  2017-10-12
+</time>
+
+ 
+        
+    </h5>
+  </div>
+</header>
+
+    <div class="container body-wrap">
+      <article id="post-前后端分离的架构设计分析" 
+  class="article article-type-post" itemprop="blogPost">
+    <div class="post-meat flex-row">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/架构设计/">架构设计</a></li></ul>
+
+    </div>
+    <div class="post-body">
+        <aside class="post-widget" id="post-widget">
+
+            
+            <div class="post-share" id="post-share">
+    <div class="tit">分享到：</div>
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" href="javascript:;" data-title="微博" data-service="tsina">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns" href="javascript:;" data-title="微信" data-service="weixin">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" href="javascript:;" data-title=" QQ" data-service="cqq">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" href="javascript:;" data-title=" Facebook" data-service="fb">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" href="javascript:;" data-title=" Twitter" data-service="twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="douban share-sns" href="javascript:;" data-title="豆瓣" data-service="douban">
+          豆
+        </a>
+      </li>
+    </ul>
+ </div>
+
+            
+
+            
+            <nav class="post-toc-wrap" id="post-toc">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#什么是前后端分离"><span class="post-toc-text">什么是前后端分离</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#为什么要前后端分离"><span class="post-toc-text">为什么要前后端分离</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#提高工作效率，分工更加明确"><span class="post-toc-text">提高工作效率，分工更加明确</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#性能提升"><span class="post-toc-text">性能提升</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#降低维护成本"><span class="post-toc-text">降低维护成本</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#常见的前后端分离方案"><span class="post-toc-text">常见的前后端分离方案</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#SPA"><span class="post-toc-text">SPA</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Node-js-中间层"><span class="post-toc-text">Node.js 中间层</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考资料"><span class="post-toc-text">参考资料</span></a></li></ol>
+            </nav>
+            
+        </aside>
+
+        <div class="post-main">
+
+            <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="什么是前后端分离"><a href="#什么是前后端分离" class="headerlink" title="什么是前后端分离"></a>什么是前后端分离</h1><p>每个人对于前后端分离的理解都不太一样，大多数人会从物理层做区分，认为客户端的部分是前端，服务器端的部分是后端。但是，更为准确的分法是从职责上区分：</p>
+<ul>
+<li>负责交互与展示的部分为前端</li>
+<li>提供数据，处理业务的部分为后端</li>
+</ul>
+<p>前后端分离意味着，前后端之间只通过API交互。从此，后端选用的技术栈不影响前端。当后端开发人员选择 Java 的时候，我可以不用 JSP 来编写前端页面，继续使用我的 React 又或者 Vue。而我使用 React 时，也不影响后端使用某一个框架。<br>前后端分离是在于技术架构上，而不是组织/流程、职位/工种的分离。所有组织/流程、职位/工种的限定，是为了更好的协作，而不应该限制人能力的发挥。如果人的能力强，当然可以全栈开发。且小团队肯定效率更高。反过来，跨部门联调这种事情，必定非常低效，且多后患，应极力避免。<br><a id="more"></a></p>
+<h1 id="为什么要前后端分离"><a href="#为什么要前后端分离" class="headerlink" title="为什么要前后端分离"></a>为什么要前后端分离</h1><ul>
+<li><h3 id="提高工作效率，分工更加明确"><a href="#提高工作效率，分工更加明确" class="headerlink" title="提高工作效率，分工更加明确"></a>提高工作效率，分工更加明确</h3>前端只关注前端的事，后端只关心后端的活，两者开发可以同时进行。在后端还没有提供接口的时候，前端可以先通过Mock的方式模拟接口数据。页面的增加和路由的修改也不必再去麻烦后端，页面模板可以重复使用，开发更加灵活。</li>
+<li><h3 id="性能提升"><a href="#性能提升" class="headerlink" title="性能提升"></a>性能提升</h3>前端页面可以按需加载，服务器也不需要解析前端页面，在页面交互及用户体验上有所提升。</li>
+<li><h3 id="降低维护成本"><a href="#降低维护成本" class="headerlink" title="降低维护成本"></a>降低维护成本</h3>页面的调试不再需要后端人员的参与，可以非常快速的定位及发现问题所在，代码重构及可维护性增强。</li>
+</ul>
+<p>需要明确一点，并非所有的项目都需要前后端分离。前后端要不要分，怎么分，是由具体业务决定的。<strong>前后端分离的最终目的还是为了提高效率</strong>，所以如果影响效率，不分也罢。</p>
+<p>下面列举一些推荐进行前后端分离的场景：</p>
+<ul>
+<li>网站需要跨设备兼容</li>
+<li>网站展示方式变换频繁</li>
+<li>页面交互比较复杂</li>
+<li>不需要搜索引擎优化（SEO）</li>
+<li>有专业的前后端团队</li>
+<li>有一套合理／可升级／客户端友好的API</li>
+</ul>
+<p>当我们决定使用前后端分离时，我们仍然需要解决一系列的问题：</p>
+<ul>
+<li>接口的安全性是否足够</li>
+<li>采用哪种认证方式</li>
+<li>如何存储用户状态</li>
+<li>是否有明确的API文档</li>
+</ul>
+<p>随着前端技术的发展和迭代，前端MV*框架应运而生，利用目前主流的前端框架，如React、Vue、Angular等我们可以轻松的构建起一个无需服务器端渲染就可以展示的网站，同时这类框架都提供了前端路由功能，后台可以不再控制路由的跳转，将原本属于前端的业务逻辑全部丢给前端，这样前后端分离可以说是最为彻底。<br>前后端分离的实现对前端人员的要求会上升一个层次，前端需要处理服务器返回的各种数据格式，还需要掌握一系列的数据处理逻辑、MVC思想和各种主流框架。</p>
+<h1 id="常见的前后端分离方案"><a href="#常见的前后端分离方案" class="headerlink" title="常见的前后端分离方案"></a>常见的前后端分离方案</h1><h3 id="SPA"><a href="#SPA" class="headerlink" title="SPA"></a>SPA</h3><p>使用目前主流的前端框架开发，由前端路由的方式代替后端的 controller，页面的展现完全靠JavaScript控制，使用 restful api 实现与后端的数据交互。</p>
+<p>SPA 是一个可以解决前后端分离的有效方案，适用于无 SEO 要求的项目。</p>
+<h3 id="Node-js-中间层"><a href="#Node-js-中间层" class="headerlink" title="Node.js 中间层"></a>Node.js 中间层</h3><p>最早见于淘宝的前端团队在14年4月份提出的中途岛(Midway Framework)架构中</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p><a href="https://juejin.im/post/59dad63ff265da065270d49e?utm_source=gold_browser_extension" target="_blank" rel="external">实践中的前后端分离</a><br><a href="https://www.zhihu.com/question/28207685" target="_blank" rel="external">Web 前后端分离的意义大吗？</a><br><a href="http://baijiahao.baidu.com/s?id=1561111462074628&amp;wfr=spider&amp;for=pc" target="_blank" rel="external">前端工程师你真的懂前后端分离是什么意思吗？</a><br><a href="http://www.cnblogs.com/luozhihao/p/5761515.html" target="_blank" rel="external">我们为什么要尝试前后端分离</a></p>
+</blockquote>
+
+            <blockquote>
+                <p>
+                本文地址：
+                <a href="http://qrframe.com/2017/10/12/前后端分离的架构设计分析/" target="_blank" rel="external">http://qrframe.com/2017/10/12/前后端分离的架构设计分析/</a>
+                </p>
+                <footer><cite><a href="http://qrframe.com">@非空的小站</a></cite></footer>
+            </blockquote>
+            </div>
+            
+<nav class="post-nav">
+  
+    <div class="waves-block waves-effect prev fl">
+      <a href="/2017/10/25/Visual-Studio-Code-扩展推荐/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Visual Studio Code 扩展推荐</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next fr">
+      <a href="/2017/09/25/ABP框架使用总结之使用Axios来导出Excel/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">ABP框架使用总结之使用Axios来导出Excel</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+            
+            
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="前后端分离的架构设计分析" data-title="前后端分离的架构设计分析" data-url="http://qrframe.com/2017/10/12/前后端分离的架构设计分析/index.html"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"ren8179"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+        </div>
+    </div>
+</article>
+    </div>
+  </main>
+<div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+<script>
+var BLOG_SHARE = {
+    title: "前后端分离的架构设计分析",
+    pic: "/img/logo.jpg",
+    summary: document.getElementsByName('summary')[0].content,
+    url: "http://qrframe.com/2017/10/12/前后端分离的架构设计分析/index.html"
+};
+</script>
+<div class="global-share" id="global-share">
+    <div class="tit">分享到：</div>
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" href="javascript:;" data-title="微博" data-service="tsina">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns" href="javascript:;" data-title="微信" data-service="weixin">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" href="javascript:;" data-title=" QQ" data-service="cqq">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" href="javascript:;" data-title=" Facebook" data-service="fb">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" href="javascript:;" data-title=" Twitter" data-service="twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="douban share-sns" href="javascript:;" data-title="豆瓣" data-service="douban">
+          豆
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<script type="text/template" id="search-tpl">
+<li class="item">
+    <a href="/{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</script>
+
+<script src="/js/search.js"></script>
+
+
+
+
+
+
+
+
+
+</body>
+</html>
